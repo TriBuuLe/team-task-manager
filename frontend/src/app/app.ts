@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ApiService, Workspace } from './services/api.service';
+import { ApiService, Workspace, Board } from './services/api.service';
 import { StatusComponent } from './components/status/status';
 
 @Component({
@@ -13,22 +13,30 @@ export class App implements OnInit {
   message: string = '';
   healthStatus: string = '';
   workspaces: Workspace[] = [];
+  boards: Board[] = [];
 
   constructor(
-    private api: ApiService,
+    private apiService: ApiService,
     private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
-    this.message = await this.api.getBackendMessage();
-    this.healthStatus = await this.api.getHealthStatus();
-    this.workspaces = await this.api.getWorkspaces();
+    this.message = await this.apiService.getBackendMessage();
+    this.healthStatus = await this.apiService.getHealthStatus();
+    this.workspaces = await this.apiService.getWorkspaces();
+    this.boards = await this.apiService.getBoards();
     this.cdr.detectChanges();
   }
 
   async createWorkspace(name: string) {
-    const workspace = await this.api.createWorkspace(name);
+    const workspace = await this.apiService.createWorkspace(name);
     this.workspaces = [...this.workspaces, workspace];
+    this.cdr.detectChanges();
+  }
+
+  async createBoard(event: { name: string; workspaceId: number }) {
+    const board = await this.apiService.createBoard(event.name, event.workspaceId);
+    this.boards = [...this.boards, board];
     this.cdr.detectChanges();
   }
 }

@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 
-
 export interface Workspace {
     id: number;
     name: string;
+}
+
+export interface Board {
+    id: number;
+    name: string;
+    workspaceId: number;
 }
 
 @Injectable({
@@ -34,6 +39,23 @@ export class ApiService {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ name })
+        });
+
+        return await response.json();
+    }
+
+    async getBoards(): Promise<Board[]> {
+        const response = await fetch(`${this.baseUrl}/boards`);
+        return await response.json();
+    }
+
+    async createBoard(name: string, workspaceId: number): Promise<Board> {
+        const response = await fetch(`${this.baseUrl}/boards`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, workspaceId })
         });
 
         return await response.json();

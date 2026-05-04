@@ -1,4 +1,4 @@
-package com.tri.taskmanager;
+package com.tri.taskmanager.workspace;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

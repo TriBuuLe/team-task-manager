@@ -3,6 +3,8 @@
     [message]="message"
     [healthStatus]="healthStatus"
     [workspaces]="workspaces"
+    [boards]="boards"
     (workspaceCreate)="createWorkspace($event)"
+    (boardCreate)="createBoard($event)"
   />
 </main>
